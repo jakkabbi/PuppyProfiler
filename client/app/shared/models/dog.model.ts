@@ -3,5 +3,5 @@ export class Dog {
   user?: string;
   name?: string;
   breed?: string;
-  birthday?: number;
+  birthday?: string;
 }

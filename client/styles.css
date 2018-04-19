@@ -3,8 +3,28 @@
 body {
   margin-top: 15px;
   margin-bottom: 10px;
+  background-color: #D2B48C;
 }
 
 .input-group {
   margin-bottom: 15px;
+}
+
+.input-group-text{
+  color: #212529;
+  background-color: #EEDC82;
+}
+
+.navbar-dark {
+  background-color: #B5651D;
+}
+
+.card-header{
+  color: #212529;
+  background-color: #e5aa70;
+}
+
+.btn-brown:hover{
+  color: #212529;
+  background-color: #e5aa70;
 }

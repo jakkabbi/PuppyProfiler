@@ -34,19 +34,20 @@
           <tr *ngFor="let dog of dogs; let i = index">
             <td>{{dog.name}}</td>
             <td>{{dog.breed}}</td>
-            <td>{{dog.age}}</td>
+            <td>{{getAge(dog)}} Months</td>
             <td colspan="2">
               <button class="btn btn-sm btn-primary" (click)="enableEditing(dog)"><i class="fa fa-pencil"></i> Update</button>
-              <button class="btn btn-sm btn-danger" (click)="deleteDog(dog)"><i class="fa fa-trash"></i> Delete</button>
+              <button class="btn btn-sm btn-danger" (click)="deleteDog(dog)"><i class="fa fa-times-circle"></i> Delete</button>
             </td>
           </tr>
       </tbody>
       <tbody *ngIf="editing">
           <tr>
               <td><input class="form-control" type="text" name="name" [(ngModel)]="dog.name" required></td>
-                <td>{{dog.breed}}</td>
-                <td>{{dog.birthday}}</td>
-                <td><button class="btn btn-sm btn-primary mr-2" (click)="editDog(dog)"><i class="fa fa-floppy-o"></i> Save</button></td>
+              <td>{{dog.breed}}</td>
+              <td><input class="form-control" type="date" name="birthday" [(ngModel)]="dog.birthday" required></td>
+              <td>{{dog.birthday}}</td>
+              <td><button class="btn btn-sm btn-primary mr-2" (click)="editDog(dog)"><i class="fa fa-floppy-o"></i> Save</button></td>
           </tr>
       </tbody>
     </table>
@@ -57,9 +58,15 @@
   <h4 class="card-header">Add a new Puppy</h4>
   <div class="card-body">
     <form class="form-inline" [formGroup]="addDogForm" (ngSubmit)="addDog()">
-      <input class="form-control mr-2" type="text" name="name" formControlName="name" text='' placeholder="Name of your dog">
-      <input class="form-control mr-2" type="text" name="breed" formControlName="breed" text='' placeholder="What breed is she/he?">
-      <span class="input-group-text"><i class="fa fa-calendar-alt"></i>Your dog's birthday:&nbsp;&nbsp;&nbsp;<input class="form-control mr-2" type="date" name="birthday" formControlName="birthday" text='' required></span>
+      <span class="input-group-text">Your dog's name:&nbsp;
+        <input class="form-control mr-2" type="text" name="name" formControlName="name" text=''>
+      </span>&nbsp;
+      <span class="input-group-text">Your dog's breed:&nbsp;
+        <input class="form-control mr-2" type="text" name="breed" formControlName="breed" text='' placeholder="e.g. Pug, Mastiff, Mix">
+      </span>
+      <span class="input-group-text"><i class="fas fa-calendar-alt"></i> Your dog's birthday:&nbsp;
+        <input class="form-control mr-2" type="date" name="birthday" formControlName="birthday" text='' required>
+      </span>&nbsp;
       <button class="btn btn-brown" type="input" [disabled]="!addDogForm.valid"><i class="fa fa-paw"></i> Register my dog!</button>
     </form>
   </div>

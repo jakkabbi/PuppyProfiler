@@ -16,12 +16,13 @@ export class DogComponent implements OnInit {
 
   isLoading = true;
   editing = false;
-
+  date: Date = new Date();
   dog = new Dog();
   dogs: Dog[] = [];
 
   addDogForm: FormGroup;
   currentUser = this.auth.currentUser.username;
+
   user = new FormControl(this.auth.currentUser.username);
   name = new FormControl('', Validators.required);
   breed = new FormControl('', Validators.required);
@@ -49,6 +50,10 @@ export class DogComponent implements OnInit {
     );
   }
 
+  getAge(dog: Dog) {
+    var age = Math.floor((Math.abs(Date.now() - Date.parse(dog.birthday)) / (1000 * 3600 * 24))/30);
+    return age;
+  }
 
   resetDogForm(){
     this.user = new FormControl(this.auth.currentUser.username);
