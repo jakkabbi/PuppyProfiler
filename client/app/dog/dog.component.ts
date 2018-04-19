@@ -3,8 +3,13 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 
 import { Dog } from '../shared/models/dog.model';
 import { DogService } from '../services/dog.service';
+import { Routine } from '../shared/models/routine.model';
+import { RoutineService } from '../services/routine.service';
 import { ToastComponent } from '../shared/toast/toast.component';
 import { AuthService } from '../services/auth.service';
+
+import * as $ from 'jquery';
+import 'fullcalendar';
 
 @Component({
   selector: 'app-dog',

@@ -2,35 +2,35 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 
-import { Dog } from '../shared/models/dog.model';
+import { Routine } from '../shared/models/routine.model';
 
 @Injectable()
-export class DogService {
+export class RoutineService {
 
   constructor(private http: HttpClient) { }
 
-  getDogs(user: String): Observable<Dog[]> {
-    return this.http.get<Dog[]>(`/api/dogs/${user}`);
+  getRoutines(dog: String): Observable<Routine[]> {
+    return this.http.get<Routine[]>(`/api/routines/${dog}`);
   }
 
-  countDogs(): Observable<number> {
-    return this.http.get<number>('/api/dogs/count');
+  countRoutines(): Observable<number> {
+    return this.http.get<number>('/api/routines/count');
   }
 
-  addDog(dog: Dog): Observable<Dog> {
-    return this.http.post<Dog>('/api/dog', dog);
+  addRoutine(routine: Routine): Observable<Routine> {
+    return this.http.post<Routine>('/api/routine', routine);
   }
 
-  getDog(dog: Dog): Observable<Dog> {
-    return this.http.get<Dog>(`/api/dog/${dog._id}`);
+  getRoutine(routine: Routine): Observable<Routine> {
+    return this.http.get<Routine>(`/api/routine/${routine._id}`);
   }
 
-  editDog(dog: Dog): Observable<string> {
-    return this.http.put(`/api/dog/${dog._id}`, dog, { responseType: 'text' });
+  editRoutine(routine: Routine): Observable<string> {
+    return this.http.put(`/api/routine/${routine._id}`, routine, { responseType: 'text' });
   }
 
-  deleteDog(dog: Dog): Observable<string> {
-    return this.http.delete(`/api/dog/${dog._id}`, { responseType: 'text' });
+  deleteRoutine(routine: Routine): Observable<string> {
+    return this.http.delete(`/api/routine/${routine._id}`, { responseType: 'text' });
   }
 
 }
