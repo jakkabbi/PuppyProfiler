@@ -22,7 +22,7 @@ export class RegisterComponent implements OnInit {
   ]);
   username = new FormControl('', [
     Validators.required,
-    Validators.minLength(2),
+    Validators.minLength(4),
     Validators.maxLength(20),
     Validators.pattern('[a-zA-Z0-9_-\\s]*')
   ]);

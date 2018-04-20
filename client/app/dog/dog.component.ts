@@ -21,27 +21,38 @@ export class DogComponent implements OnInit {
 
   isLoading = true;
   editing = false;
+  viewingEvents = false;
   date: Date = new Date();
   dog = new Dog();
   dogs: Dog[] = [];
+  routines: Routine[] = [];
 
   addDogForm: FormGroup;
-  currentUser = this.auth.currentUser.username;
+  addRoutineForm: FormGroup;
 
+  currentUser = this.auth.currentUser.username;
   user = new FormControl(this.auth.currentUser.username);
   name = new FormControl('', Validators.required);
   breed = new FormControl('', Validators.required);
   birthday = new FormControl('', Validators.required);
 
+  time = new FormControl('',Validators.required);
+  action = new FormControl('',Validators.required);
+  notes = new FormControl('');
+
+
   constructor(private dogService: DogService,
+              private routineService: RoutineService,
               private formBuilder: FormBuilder,
               public toast: ToastComponent,
               public auth: AuthService) { }
 
   ngOnInit() {
     this.editing = false;
+    this.viewingEvents = false;
     this.getDogs();
     this.resetDogForm();
+    this.resetRoutineForm();
   }
 
   getDogs() {
@@ -85,6 +96,7 @@ export class DogComponent implements OnInit {
     this.getDogs();
   }
 
+
   enableEditing(dog: Dog) {
     this.editing = true;
     this.dog = dog;
@@ -112,16 +124,69 @@ export class DogComponent implements OnInit {
   }
 
   deleteDog(dog: Dog) {
-    if (window.confirm('Are you sure you want to delete this stock from your portfolio?')) {
+    if (window.confirm('Are you sure you want to remove this dog from the app?')) {
       this.dogService.deleteDog(dog).subscribe(
         () => {
           const pos = this.dogs.map(elem => elem._id).indexOf(dog._id);
           this.dogs.splice(pos, 1);
-          this.toast.setMessage('item deleted successfully.', 'success');
+          this.toast.setMessage('item removed successfully.', 'success');
         },
         error => console.log(error)
       );
     }
   }
+
+  resetRoutineForm(){
+    this.time = new FormControl('',Validators.required);
+    this.action = new FormControl('',Validators.required);
+    this.notes = new FormControl('');
+
+    this.addRoutineForm = this.formBuilder.group({
+      dog: this.dog._id,
+      time: this.time,
+      action: this.action,
+      notes: this.notes
+    });
+  }
+
+  getRoutines(dog: Dog) {
+    this.dog = dog;
+    this.routineService.getRoutines(dog._id).subscribe(
+      data => {
+          this.routines = data;
+          console.log(data);
+      },
+      error => console.log(error),
+      () => this.isLoading = false
+    );
+  }
+
+  addRoutine() {
+    this.routineService.addRoutine(this.addRoutineForm.value).subscribe(
+      res => {
+        this.routines.push(res);
+        this.resetRoutineForm();
+        this.toast.setMessage('item added successfully.', 'success');
+      },
+      error => console.log(error)
+    );
+    console.log(this.addRoutineForm.value);
+    this.getDogs();
+  }
+
+  enableViewing(dog: Dog){
+    this.viewingEvents = true;
+    this.dog = dog;
+    this.getRoutines(dog);
+    this.resetRoutineForm();
+  }
+
+  disableViewing(){
+    this.viewingEvents = false;
+    this.dog = new Dog();
+    this.toast.setMessage('Calendar closed.', "success")
+    this.ngOnInit();
+  }
+
 
 }

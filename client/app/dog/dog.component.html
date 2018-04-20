@@ -1,80 +1,122 @@
-<app-loading [condition]="isLoading"></app-loading>
+<head>
+  <script>
+    $(function() {
 
-<app-toast [message]="toast.message"></app-toast>
+      // page is now ready, initialize the calendar...
 
-<div class="card mb-3" *ngIf="!isLoading">
-  <h4 class="card-header" *ngIf="dogs.length !== 1">Your Dogs</h4>
-  <h4 class="card-header" *ngIf="dogs.length === 1">Your Dog</h4>
-  <div class="card-body">
-    <table class="table table-bordered">
-      <thead class="thead-light">
-        <ng-container *ngIf="!editing">
-          <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Breed</th>
-            <th scope="col">Age</th>
-            <th scope="col">Actions</th>
-          </tr>
-        </ng-container>
-        <ng-container *ngIf="editing">
-          <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Breed</th>
-            <th scope="col">Age</th>
-            <th scope="col">Action</th>
-          </tr>
-        </ng-container>
-      </thead>
-      <tbody *ngIf="dogs.length === 0">
-        <tr>
-          <td colspan="4">No puppies registered yet.</td>
-        </tr>
-      </tbody>
-      <tbody *ngIf="!editing">
-          <tr *ngFor="let dog of dogs; let i = index">
-            <td>{{dog.name}}</td>
-            <td>{{dog.breed}}</td>
-            <td>{{getAge(dog)}} Months</td>
-            <td colspan="2">
-              <button class="btn btn-sm btn-primary" (click)="enableEditing(dog)"><i class="fa fa-pencil"></i> Update</button>
-              <button class="btn btn-sm btn-danger" (click)="deleteDog(dog)"><i class="fa fa-times-circle"></i> Delete</button>
-            </td>
-          </tr>
-      </tbody>
-      <tbody *ngIf="editing">
-          <tr>
+      $('#calendar').fullCalendar({
+        // put your options and callbacks here
+      })
+
+    });
+  </script>
+</head>
+<body>
+
+  <app-loading [condition]="isLoading"></app-loading>
+
+  <app-toast [message]="toast.message"></app-toast>
+
+  <div class="card mb-3" *ngIf="!isLoading">
+    <ng-container *ngIf="!viewingEvents">
+      <h4 class="card-header" *ngIf="dogs.length !== 1">Your Dogs</h4>
+      <h4 class="card-header" *ngIf="dogs.length === 1">Your Dog</h4>
+      <div class="card-body">
+        <table class="table table-bordered">
+          <thead class="thead-light">
+            <ng-container *ngIf="!editing">
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Breed</th>
+                <th scope="col">Age</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </ng-container>
+            <ng-container *ngIf="editing">
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Breed</th>
+                <th scope="col">Age</th>
+                <th scope="col">Action</th>
+              </tr>
+            </ng-container>
+          </thead>
+          <tbody *ngIf="dogs.length === 0">
+            <tr>
+              <td colspan="4">No puppies registered yet.</td>
+            </tr>
+          </tbody>
+          <tbody *ngIf="!editing">
+            <tr *ngFor="let dog of dogs; let i = index">
+              <td>
+                <button class="btn btn-clear" (click)="enableViewing(dog)">{{dog.name}}</button>
+              </td>
+              <td>{{dog.breed}}</td>
+              <td>{{getAge(dog)}} Months</td>
+              <td colspan="2">
+                <button class="btn btn-sm btn-primary" (click)="enableEditing(dog)"><i class="fa fa-pencil"></i> Update</button>
+                <button class="btn btn-sm btn-danger" (click)="deleteDog(dog)"><i class="fa fa-times-circle"></i> Remove</button>
+              </td>
+            </tr>
+          </tbody>
+          <tbody *ngIf="editing">
+            <tr>
               <td><input class="form-control" type="text" name="name" [(ngModel)]="dog.name" required></td>
               <td>{{dog.breed}}</td>
               <td><input class="form-control" type="date" name="birthday" [(ngModel)]="dog.birthday" required></td>
-              <td>{{dog.birthday}}</td>
               <td><button class="btn btn-sm btn-primary mr-2" (click)="editDog(dog)"><i class="fa fa-floppy-o"></i> Save</button></td>
-          </tr>
-      </tbody>
-    </table>
+            </tr>
+          </tbody>
+            <td *ngIf="editing" align="center"><button class="btn btn-sm btn-warning" (click)="cancelEditing()"><i class="fa fa-times"></i> Cancel Editing</button></td>
+        </table>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="viewingEvents">
+      <h4 class="card-header">{{dog.name}}'s Routine</h4>
+      <div id='calendar'></div>
+      <td colspan="4">
+        <button class="btn btn-sm btn-warning" (click)="disableViewing()"><i class="fa fa-times"></i> Exit Calendar</button>
+      </td>
+    </ng-container>
   </div>
-</div>
-
-<div class="card" *ngIf="!editing">
-  <h4 class="card-header">Add a new Puppy</h4>
-  <div class="card-body">
-    <form class="form-inline" [formGroup]="addDogForm" (ngSubmit)="addDog()">
-      <span class="input-group-text">Your dog's name:&nbsp;
-        <input class="form-control mr-2" type="text" name="name" formControlName="name" text=''>
-      </span>&nbsp;
-      <span class="input-group-text">Your dog's breed:&nbsp;
-        <input class="form-control mr-2" type="text" name="breed" formControlName="breed" text='' placeholder="e.g. Pug, Mastiff, Mix">
-      </span>
-      <span class="input-group-text"><i class="fas fa-calendar-alt"></i> Your dog's birthday:&nbsp;
-        <input class="form-control mr-2" type="date" name="birthday" formControlName="birthday" text='' required>
-      </span>&nbsp;
-      <button class="btn btn-brown" type="input" [disabled]="!addDogForm.valid"><i class="fa fa-paw"></i> Register my dog!</button>
-    </form>
+  <ng-container *ngIf="!viewingEvents">
+    <div class="card" *ngIf="!editing">
+      <h4 class="card-header">Add a new Puppy</h4>
+      <div class="card-body">
+        <form class="form-inline" [formGroup]="addDogForm" (ngSubmit)="addDog()">
+          <span class="input-group-text">Your dog's name:&nbsp;
+            <input class="form-control mr-2" type="text" name="name" formControlName="name" text=''>
+          </span>&nbsp;
+          <span class="input-group-text">Your dog's breed:&nbsp;
+            <input class="form-control mr-2" type="text" name="breed" formControlName="breed" text='' placeholder="e.g. Pug, Mastiff, Mix">
+          </span>
+          <span class="input-group-text"><i class="fas fa-calendar-alt"></i> Your dog's birthday:&nbsp;
+            <input class="form-control mr-2" type="date" name="birthday" formControlName="birthday" text='' required>
+          </span>&nbsp;
+          <button class="btn btn-brown" type="input" [disabled]="!addDogForm.valid"><i class="fa fa-paw"></i> Register my dog!</button>
+        </form>
+      </div>
+    </div>
+  </ng-container>
+  <div class="card" *ngIf="viewingEvents">
+    <h4 class="card-header">Insert record</h4>
+    <div class="card-body">
+      <form class="form-inline" [formGroup]="addRoutineForm" (ngSubmit)="addRoutine()">
+        <span class="input-group-text">Time:&nbsp;
+          <input class="form-control mr-2" type="time" name="time" formControlName="time" value="00:00">
+        </span>
+        <span class="input-group-text">What did you do? &nbsp;
+          <select class="form-control custom-select" name="action" formControlName="action">
+            <option value="fed">fed</option>
+            <option value="walk">walk</option>
+            <option value="potty">potty</option>
+          </select>
+        </span>&nbsp;
+        <span class="input-group-text"><i class="fas fa-calendar-alt"></i> Any notes (optional):&nbsp;
+          <input class="form-control mr-2" type="text" name="notes" formControlName="notes" text=''>
+        </span>&nbsp;
+        <button class="btn btn-brown" type="input" [disabled]="!addRoutineForm.valid"><i class="fas fa-clock"></i> Add to day's events</button>
+      </form>
+    </div>
   </div>
-</div>
-
-<div class="card" *ngIf="editing">
-  <h4 class="card-header">Cancel Editing</h4>
-  <div class="card-body">
-      <td colspan="4"> <button class="btn btn-sm btn-warning" (click)="cancelEditing()"><i class="fa fa-times"></i> Cancel</button></td>
-  </div>
-</div>
+</body>

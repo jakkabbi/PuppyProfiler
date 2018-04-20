@@ -31,8 +31,18 @@
 }
 
 .btn-brown:hover{
-color: #fff;
+color: #212529;
 background-color: #B5651D;
+}
+
+.btn-clear{
+  background-color: #D2B48C;
+  border-color: #D2B48C;
+}
+
+.btn-clear:hover{
+  background-color: #D2B48C;
+  border-color: #D2B48C;
 }
 
 span {
