@@ -1,3 +1,6 @@
+This project was started using the Github Angular Full Stack project described below.
+
+
 # Angular Full Stack [![Dependencies](https://david-dm.org/DavideViolante/Angular-Full-Stack.svg)](https://david-dm.org/DavideViolante/Angular2-Full-Stack) [![Donate](https://img.shields.io/badge/paypal-donate-179BD7.svg)](https://www.paypal.me/dviolante) [![MIT license](http://img.shields.io/badge/license-MIT-lightgrey.svg)](http://opensource.org/licenses/MIT)
 
 
@@ -49,22 +52,9 @@ A window will automatically open at [localhost:4200](http://localhost:4200). Ang
 13. `git push heroku master`
 14. `heroku open` and a window will open with your app online
 
-## Preview
-![Preview](https://raw.githubusercontent.com/DavideViolante/Angular2-Full-Stack/master/demo.gif "Preview")
-
 ## Please open an issue if
 * you have any suggestion to improve this project
 * you noticed any problem or error
-
-## To do
-* More tests
-
-## Running frontend unit tests
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running frontend end-to-end tests
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/). 
-Before running the tests make sure you are serving the app via `npm start`.
 
 ## Running backend tests
 Run `mongod` to run an instance of MongoDB, then run `npm run testbe` to execute the backend tests via [Mocha](https://mochajs.org/).
